@@ -1,14 +1,17 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Gameplay
 {
     public class E_Jump : MonoBehaviour
     {
-        public float jumpForce = 15.0f; 
-        public float gravityScale = 1.0f; 
+        public float jumpForce = 15.0f; // Force applied when jumping
+        public float gravityScale = 1.0f; // Scale for additional gravity
 
         private Rigidbody _rb;
         private bool _isGrounded;
+        public LayerMask groundLayer; // Layer for ground objects
 
         void Start()
         {
@@ -17,10 +20,11 @@ namespace Gameplay
 
         void Update()
         {
-           
-            _isGrounded = Physics.Raycast(transform.position, Vector3.down, 1.1f); 
+            // Check if the player is grounded
+            _isGrounded = Physics.CheckSphere(transform.position, 0.1f, groundLayer);
 
-            if (_isGrounded && (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.W)))
+            // Jump input
+            if (_isGrounded && (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W)))
             {
                 Jump();
             }
@@ -28,24 +32,16 @@ namespace Gameplay
 
         void FixedUpdate()
         {
-           
+            // Apply additional gravity for smoother jumps
             _rb.AddForce(Physics.gravity * gravityScale, ForceMode.Acceleration);
         }
 
-        public void OnSwipe(Vector2 swipeDirection)
+        void Jump()
         {
-            if (_isGrounded)
-            {
-                Jump();
-            }
-        }
-
-        private void Jump()
-        {
-            
+            // Apply an upward force to the Rigidbody
             _rb.velocity = new Vector3(_rb.velocity.x, jumpForce, _rb.velocity.z);
         }
-
-        public bool IsGrounded() => _isGrounded; 
     }
 }
+
+

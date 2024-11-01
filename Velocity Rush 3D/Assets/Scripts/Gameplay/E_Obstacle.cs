@@ -11,6 +11,7 @@ namespace Gameplay
         {
             if (other.CompareTag("Player"))
             {
+                // Call the player's die method
                 other.GetComponent<E_PlayerHealth>().Die();
             }
         }

@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class E_Collectable : MonoBehaviour
 {
@@ -11,16 +10,7 @@ public class E_Collectable : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            
-            M_ScoreManager scoreManager = FindObjectOfType<M_ScoreManager>();
-            if (scoreManager != null)
-            {
-                scoreManager.AddScore(value);
-            }
-            else
-            {
-                Debug.LogError("ScoreManager not found in the scene.");
-            }
+            M_ScoreManager.Instance.AddScore(value);
             Destroy(gameObject); // Remove coin from the scene
         }
     }
